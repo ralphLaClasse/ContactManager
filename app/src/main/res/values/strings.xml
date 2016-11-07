@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Gestionnaire des contacts</string>
+    <string name="action_settings">Settings</string>
+    <string name="contact_name">Nom</string>
+    <string name="contact_phone">Téléphone</string>
+    <string name="contact_email">Email</string>
+    <string name="add_photo">Photo</string>
+    <string name="done">Ajouter</string>
+    <string name="contact_photo">Prendre une photo</string>
+
+</resources>
