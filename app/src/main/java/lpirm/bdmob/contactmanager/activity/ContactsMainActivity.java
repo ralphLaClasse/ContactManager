@@ -1,12 +1,18 @@
 package lpirm.bdmob.contactmanager.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.MenuInflater;
@@ -21,6 +27,9 @@ import lpirm.bdmob.contactmanager.R;
 import lpirm.bdmob.contactmanager.adapter.CustomCursorAdapter;
 import lpirm.bdmob.contactmanager.databaseManager.DatabaseManager;
 import lpirm.bdmob.contactmanager.provider.*;
+
+import static lpirm.bdmob.contactmanager.activity.AddNewContactActivity.CAPTURE_PHOTO_FROM_CAMERA;
+import static lpirm.bdmob.contactmanager.activity.AddNewContactActivity.PICK_PHOTO_FROM_GALLERY;
 
 public class ContactsMainActivity extends Activity implements OnClickListener,
 		LoaderManager.LoaderCallbacks<Cursor> {
@@ -100,9 +109,36 @@ public class ContactsMainActivity extends Activity implements OnClickListener,
 
 		switch (item.getItemId()) {
 		case R.id.delete_item:
+			final CharSequence[] items = { "Oui",
+					"Annuler" };
 
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					ContactsMainActivity.this);
+			builder.setTitle("Voulez-vous vraiment supprimer ce contact ?");
+			builder.setItems(items, new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int item) {
+
+					if (items[item].equals("Oui")) {
+//						appel du provider pour supprimer
+						ContentResolver contentResolver = getContentResolver();
+
+						int nombre_ligne_maj = contentResolver.delete(Uri.parse("content://lpirm.bdmob.contactmanager.provider/contacts"), "_id = ?", new String[] {((String) info.id)});
+
+					}else if (items[item].equals("Annuler")) {
+
+						dialog.dismiss();
+					}
+				}
+
+			});
+			builder.show();
+			break;
 		case R.id.update_item:
-
+			Intent intent = new Intent(ContactsMainActivity.this,
+					AddNewContactActivity.class);
+			intent.putExtra(REQ_TYPE, CONTACT_ADD_REQ_CODE);
+			startActivityForResult(intent, CONTACT_ADD_REQ_CODE);
 			break;
 		}
 		return super.onContextItemSelected(item);

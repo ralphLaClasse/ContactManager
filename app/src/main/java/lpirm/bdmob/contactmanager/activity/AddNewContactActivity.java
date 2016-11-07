@@ -199,6 +199,7 @@ public class AddNewContactActivity extends Activity implements OnClickListener {
 			ContentResolver resolver = getContentResolver();
 			if (reqType == ContactsMainActivity.CONTACT_UPDATE_REQ_CODE) {
 				// Exercise
+
 			} else {
 				resolver.insert(PersonalContactContract.CONTENT_URI,
 						prepareData(contact));
